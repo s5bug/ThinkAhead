@@ -34,20 +34,14 @@ type StateMachineExt() =
         StateMachineExt.StateMachine_ends.SetValue(machine, ends)
         
         let csUpdate: Func<int> = Func<_>(update)
-        let csCoroutine: Func<IEnumerator> = match coroutine |> Option.map (fun f -> Func<_>(f)) with
-                                             | Some x -> x
-                                             | None -> null
-        let csBeginning: Action = match beginning |> Option.map (fun f -> Action(f)) with
-                                  | Some x -> x
-                                  | None -> null
-        let csEnding: Action = match ending |> Option.map (fun f -> Action(f)) with
-                               | Some x -> x
-                               | None -> null
+        let csCoroutine: Func<IEnumerator> = coroutine |> Option.map (fun f -> Func<_>(f)) |> Option.defaultValue null
+        let csBeginning: Action = beginning |> Option.map (fun f -> Action(f)) |> Option.defaultValue null
+        let csEnding: Action = ending |> Option.map (fun f -> Action(f)) |> Option.defaultValue null
         
         machine.SetCallbacks(nextIndex, csUpdate, csCoroutine, csBeginning, csEnding)
 
         nextIndex
-
+    
     static member val private StateMachine_updates: FieldInfo =
         typeof<StateMachine>.GetField("updates", BindingFlags.Instance ||| BindingFlags.NonPublic)
     static member val private StateMachine_coroutines: FieldInfo =
