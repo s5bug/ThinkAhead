@@ -1,0 +1,6 @@
+- Name: ThinkAhead
+  Version: 0.0.1
+  DLL: ThinkAhead.dll
+  Dependencies:
+    - Name: Everest
+      Version: 1.1909.0
